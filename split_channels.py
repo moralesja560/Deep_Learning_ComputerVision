@@ -28,6 +28,16 @@ while True:
 	cv2.imshow("Red channel", cv2.merge([zeroes,zeroes,R]))
 	cv2.imshow("Green channel", cv2.merge([zeroes,G,zeroes]))
 	cv2.imshow("Blue channel", cv2.merge([B,zeroes,zeroes]))
+	#amplify a color 
+	cv2.imshow("Blue channel+", cv2.merge([B+100,G,R]))
+	#chahge to HSV from BGR
+	imgHSV = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+	cv2.imshow("HSV colorspace", imgHSV)
 	cv2.imshow("normal",img)
+	#shot the HSV channels
+	cv2.imshow("Hue",imgHSV[:,:,0])
+	cv2.imshow("Sat",imgHSV[:,:,1])
+	cv2.imshow("Value",imgHSV[:,:,2])
+	
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
