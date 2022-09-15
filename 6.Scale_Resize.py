@@ -1,4 +1,3 @@
-from email.mime import image
 import cv2
 from cv2 import imshow
 import os
