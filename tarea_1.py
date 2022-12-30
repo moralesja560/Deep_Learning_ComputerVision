@@ -7,7 +7,7 @@ import numpy as np
 img1 = cv2.imread('day.jpg',0)
 img1 = img1/255
 
-scale_percent = 60 # percent of original size
+scale_percent = 35 # percent of original size
 width = int(img1.shape[1] * scale_percent / 100)
 height = int(img1.shape[0] * scale_percent / 100)
 dim = (width, height)
@@ -45,6 +45,7 @@ g2 = g.copy()
 
 def median_filter(data, filter_size):
 	data_after = data
+	data_big = np.pad(data,3, mode='reflect')
 	indexer = filter_size // 2
 	# ancho*alto 3270*2716
 	# ancho*alto 1962*1629
@@ -56,21 +57,22 @@ def median_filter(data, filter_size):
 			temp = []
 			for z in range(filter_size):
 				if pixel_alto + z - indexer < 0 or pixel_alto + z - indexer > len(data) - 1:
-					for c in range(filter_size):
- 						#temp.append(0)
-						pass
-				#else:
-				#	if j + z - indexer < 0 or j + indexer > len(data[0]) - 1:
-				#		temp.append(0)
-				#	else:
-				#		for k in range(filter_size):
-				#			temp.append(data_after[i + z - indexer][j + k - indexer])
+					try:
+						temp.append(data[pixel_alto + z - indexer+1][pixel_ancho + k - indexer+1])
+					except:
+						temp.append(0)
 				else:
 					for k in range(filter_size):
 						if pixel_ancho + z - indexer < 0 or pixel_ancho + indexer > len(data[0]) - 1:
-							temp.append(0)
+							try:
+								temp.append(data[pixel_alto + z - indexer][pixel_ancho + k - indexer-1])
+							except:
+								temp.append(0)
 						else:
-							temp.append(data_after[pixel_alto + z - indexer][pixel_ancho + k - indexer])	
+							try:
+								temp.append(data[pixel_alto + z - indexer][pixel_ancho + k - indexer+1])
+							except:
+								temp.append(0)
 
 			temp.sort()
 			data_after[pixel_alto][pixel_ancho] = temp[len(temp) // 2]
@@ -80,6 +82,7 @@ def median_filter(data, filter_size):
 #img_median = cv2.medianBlur(g, 5)
 
 img_median = median_filter(g,3)
+
 while True:
 	cv2.imshow("original", img)
 	cv2.imshow("salted",g2)
