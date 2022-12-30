@@ -45,7 +45,7 @@ g2 = g.copy()
 
 def median_filter(data, filter_size):
 	data_after = data
-	data_big = np.pad(data,3, mode='reflect')
+	data_big = np.pad(data,2, mode='reflect')
 	indexer = filter_size // 2
 	# ancho*alto 3270*2716
 	# ancho*alto 1962*1629
@@ -57,10 +57,13 @@ def median_filter(data, filter_size):
 			temp = []
 			for z in range(filter_size):
 				if pixel_alto + z - indexer < 0 or pixel_alto + z - indexer > len(data) - 1:
-					try:
-						temp.append(data[pixel_alto + z - indexer+1][pixel_ancho + k - indexer+1])
-					except:
+					#try:
+					#	temp.append(data[pixel_alto + z - indexer+1][pixel_ancho + k - indexer+1])
+					#except:
+					#	temp.append(0)
+					for c in range(filter_size):
 						temp.append(0)
+					#pass
 				else:
 					for k in range(filter_size):
 						if pixel_ancho + z - indexer < 0 or pixel_ancho + indexer > len(data[0]) - 1:
